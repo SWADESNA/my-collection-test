@@ -1,0 +1,12 @@
+- name: Gather information on given az
+  #hosts: juniper
+  hosts: all
+  gather_facts: no
+  collections:   # Define collections to search
+    - amazon.aws
+    
+  tasks:
+    - name: gather az info
+      aws_az_info:
+        filters:
+          zone-name: eu-west-1a
