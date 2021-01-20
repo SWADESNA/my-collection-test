@@ -1,16 +1,22 @@
-- name: Gather information on given az
-  #hosts: juniper
+---
+- name: Add some objects to the firewall
   hosts: all
-  gather_facts: no
-  collections:   # Define collections to search
-    - amazon.aws
-    
+  connection: local
+  gather_facts: False
+
+  vars:
+    provider:
+       ip_address: "{{ inventory_hostname }}"
+       username: "testuser"
+       password: "testpw"
+       port: "443"
+
   tasks:
-  
-  - name: gather information about an AMI using ami-id
-    amazon.aws.ec2_ami_info:
-      image_ids: ami-5b488823
-  
-  - name: gather az info
-    aws_az_info:
+    - paloaltonetworks.panos.panos_address_object:
+        provider: '{{ provider }}'
+        name: 'test-address'
+        value: '192.168.100.89/24'
+        address_type: 'ip-netmask'
+        description: 'This is a test address object'
+        commit: N
         
